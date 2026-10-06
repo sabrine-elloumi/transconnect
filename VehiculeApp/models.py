@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.validators import MinValueValidator, MaxValueValidator
 from EntrepriseApp.models import Entreprise
+
 
 class Vehicule(models.Model):
     TYPE_CHOICES = [
@@ -11,13 +13,22 @@ class Vehicule(models.Model):
 
     immatriculation = models.CharField(max_length=20, unique=True)
     type_vehicule = models.CharField(max_length=20, choices=TYPE_CHOICES)
-    capacite_kg = models.PositiveIntegerField()
+
+    capacite_kg = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1, "La capacité doit être supérieure à 0 kg"),
+            MaxValueValidator(10000, "La capacité ne peut pas dépasser 10000 kg"),
+        ]
+    )
+
     disponible = models.BooleanField(default=True)
+
     entreprise = models.ForeignKey(
         Entreprise,
         on_delete=models.CASCADE,
         related_name='vehicules',
     )
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

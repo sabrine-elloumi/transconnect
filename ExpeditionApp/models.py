@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 from EntrepriseApp.models import Entreprise
 
 
@@ -34,11 +35,31 @@ class Expedition(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def clean(self):
+        super().clean()
+        if self.entreprise and self.entreprise.type_entreprise != 'c':
+            raise ValidationError("L'entreprise associée doit être de type 'Chargeur'.")
+
+    @classmethod
+    def _generate_reference(cls):
+        annee = timezone.now().strftime('%Y')
+        prefix = f"EXP-{annee}-"
+
+        dernier = cls.objects.filter(reference__startswith=prefix).order_by('reference').last()
+
+        if dernier:
+            try:
+                num = int(dernier.reference.split('-')[-1]) + 1
+            except (ValueError, IndexError):
+                num = 1
+        else:
+            num = 1
+
+        return f"{prefix}{num:05d}"
+
     def save(self, *args, **kwargs):
         if not self.reference:
-            last = Expedition.objects.order_by('-id').first()
-            next_id = (last.id + 1) if last else 1
-            self.reference = f"EXP-{next_id:05d}"
+            self.reference = self._generate_reference()
         super().save(*args, **kwargs)
 
     def __str__(self):
