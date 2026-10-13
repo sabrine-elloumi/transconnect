@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from EntrepriseApp.models import Entreprise
+from django.core.exceptions import ValidationError
 
 
 class Expedition(models.Model):
@@ -40,6 +41,12 @@ class Expedition(models.Model):
         if self.entreprise and self.entreprise.type_entreprise != 'c':
             raise ValidationError("L'entreprise associée doit être de type 'Chargeur'.")
 
+    def save(self, *args, **kwargs):
+        if not self.reference:
+            self.reference = self._generate_reference()
+        super().save(*args, **kwargs)
+
+
     @classmethod
     def _generate_reference(cls):
         annee = timezone.now().strftime('%Y')
@@ -57,10 +64,6 @@ class Expedition(models.Model):
 
         return f"{prefix}{num:05d}"
 
-    def save(self, *args, **kwargs):
-        if not self.reference:
-            self.reference = self._generate_reference()
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.reference} ({self.ville_depart} → {self.ville_arrivee})"

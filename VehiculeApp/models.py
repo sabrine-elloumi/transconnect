@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from EntrepriseApp.models import Entreprise
+from django.core.exceptions import ValidationError
 
 
 class Vehicule(models.Model):
@@ -34,3 +35,12 @@ class Vehicule(models.Model):
 
     def __str__(self):
         return f"{self.immatriculation} ({self.get_type_vehicule_display()})"
+
+    def clean(self):
+        super().clean()
+        if self.entreprise and self.entreprise.type_entreprise != 't':
+            raise ValidationError("L'entreprise associée doit être de type 'Transporteur'.")
+
+    def save(self, *args, **kwargs):
+        self.full_clean()  
+        super().save(*args, **kwargs)

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator, MinLengthValidator, MaxLengthValidator
+from django.core.exceptions import ValidationError
 
 # 1. VALIDATEURS (définis AVANT les classes)
 
@@ -10,6 +11,13 @@ matricule_fiscal_validator = RegexValidator(
     message="Format de matricule fiscal invalide. Exemple : 1234567A/B/M/123"
 )
 
+def validate_email(value):
+    if not value:
+        raise ValidationError("L'adresse e-mail est obligatoire.")
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", value):
+        raise ValidationError("Format d'adresse e-mail invalide.")
+
+    
 adresse_validators = [
     MinLengthValidator(20, "L'adresse ne peut pas avoir moins de 20 caractères."),
     MaxLengthValidator(400, "L'adresse ne peut pas avoir plus de 400 caractères."),
