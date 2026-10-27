@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Expeditions List</h1>
+    <ul>
+    {% for expedition in list %}
+        <li><a href="{% url 'Expedition:details' expedition.id %}">{{expedition.reference}} - {{expedition.entreprise}}</a></li>
+        {% empty %}
+            No expedition
+    {% endfor %}
+    </ul>
+</body>
+</html>
