@@ -1,17 +1,49 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Expéditions</title>
+    <!-- Le lien vers ton CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Expeditions List</h1>
-    <ul>
-    {% for expedition in list %}
-        <li><a href="{% url 'Expedition:details' expedition.id %}">{{expedition.reference}} - {{expedition.entreprise}}</a></li>
-        {% empty %}
-            No expedition
-    {% endfor %}
-    </ul>
+    <div class="container">
+        <h1>Liste des Expéditions</h1>
+        
+        <!-- Le bouton pour créer -->
+        <div style="margin-bottom: 20px;">
+            <a href="{% url 'Expedition:create_expedition' %}" class="btn btn-success">+ Créer une expédition</a>
+        </div>
+
+        <!-- Le tableau (qui remplace les puces <ul> et <li>) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Entreprise</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for expedition in list %}
+                <tr>
+                    <td><strong>{{ expedition.reference }}</strong></td>
+                    <td>{{ expedition.entreprise }}</td>
+                    <td>
+                        <a href="{% url 'Expedition:detail_expedition' expedition.pk %}">Voir</a> |
+                        <a href="{% url 'Expedition:update_expedition' expedition.pk %}">Modifier</a> |
+                        <a href="{% url 'Expedition:delete_expedition' expedition.pk %}" style="color: #e74c3c;">Supprimer</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3">Aucune expédition pour le moment.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>

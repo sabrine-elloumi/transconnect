@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if object %}Modifier{% else %}Créer{% endif %} une expédition</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>{% if object %}Modifier{% else %}Créer{% endif %} une expédition</h1>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{ form.as_p }}
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-success">Enregistrer</button>
+                <a href="{% url 'Expedition:liste_expedition' %}" class="btn btn-secondary">Annuler</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
