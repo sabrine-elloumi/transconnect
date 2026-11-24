@@ -1,23 +1,43 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Expéditions</title>
-    <!-- Le lien vers ton CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="{% url 'Expedition:liste_expedition' %}">Accueil</a>
+            <a href="{% url 'Expedition:create_expedition' %}">Créer une expédition</a>
+        </div>
+        <div class="navbar-right">
+            {% if user.is_authenticated %}
+                <span>Bienvenue, {{ user.username }} !</span>
+                
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Se déconnecter</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Se connecter</a>
+                <a href="{% url 'register' %}">S'inscrire</a>
+            {% endif %}
+        </div>
+    </nav>
+
     <div class="container">
         <h1>Liste des Expéditions</h1>
-        
-        <!-- Le bouton pour créer -->
+
         <div style="margin-bottom: 20px;">
-            <a href="{% url 'Expedition:create_expedition' %}" class="btn btn-success">+ Créer une expédition</a>
+            <a href="{% url 'Expedition:create_expedition' %}" class="btn btn-success">
+                + Créer une expédition
+            </a>
         </div>
 
-        <!-- Le tableau (qui remplace les puces <ul> et <li>) -->
         <table>
             <thead>
                 <tr>
@@ -34,7 +54,8 @@
                     <td>
                         <a href="{% url 'Expedition:detail_expedition' expedition.pk %}">Voir</a> |
                         <a href="{% url 'Expedition:update_expedition' expedition.pk %}">Modifier</a> |
-                        <a href="{% url 'Expedition:delete_expedition' expedition.pk %}" style="color: #e74c3c;">Supprimer</a>
+                        <a href="{% url 'Expedition:delete_expedition' expedition.pk %}"
+                           style="color:#e74c3c;">Supprimer</a>
                     </td>
                 </tr>
                 {% empty %}

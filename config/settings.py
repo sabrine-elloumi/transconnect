@@ -130,3 +130,8 @@ AUTH_USER_MODEL = 'EntrepriseApp.Utilisateur'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = 'Expedition:liste_expedition' 
+LOGOUT_REDIRECT_URL = '/login/'

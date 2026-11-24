@@ -6,6 +6,7 @@ from django.views.generic import CreateView
 from django.views.generic import DetailView, ListView, DeleteView
 from .forms import ExpeditionForm
 from django.views.generic.edit import UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 def home(request):
@@ -50,7 +51,7 @@ class CreateExpedition(CreateView):
     form_class = ExpeditionForm 
     success_url = reverse_lazy('Expedition:liste_expedition')
 
-class UpdateExpedition(UpdateView):
+class UpdateExpedition(LoginRequiredMixin, UpdateView):
     model = Expedition
     template_name = 'expedition/forms.html'
     form_class = ExpeditionForm

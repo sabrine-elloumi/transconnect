@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Application Expédition{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    
+    <nav class="navbar">
+        <div class="navbar-left">
+            <a href="{% url 'Expedition:liste_expedition' %}">Accueil</a>
+            <a href="{% url 'Expedition:create_expedition' %}">Créer une expédition</a>
+        </div>
+        <div class="navbar-right">
+            {% if user.is_authenticated %}
+                <span>Bienvenue, <strong>{{ user.username }}</strong> !</span>
+                <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="link-button">Se déconnecter</button>
+                </form>
+            {% else %}
+                <a href="{% url 'login' %}">Se connecter</a>
+                <a href="{% url 'register' %}">S'inscrire</a>
+            {% endif %}
+        </div>
+    </nav>
+
+  
+    {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    
+    {% block content %}{% endblock %}
+
+</body>
+</html>

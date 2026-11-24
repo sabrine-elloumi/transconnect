@@ -1,0 +1,49 @@
+{% extends 'offre/base.html' %}
+{% load static %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>Créer un compte</h1>
+        <p class="auth-subtitle">Rejoignez-nous pour gérer vos expéditions.</p>
+
+        <form method="post" class="auth-form">
+            {% csrf_token %}
+
+
+            {% if form.non_field_errors %}
+                <div class="form-errors">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+
+            {% for field in form %}
+                <div class="form-group">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small class="help-text">{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <div class="field-errors">
+                            {{ field.errors }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary btn-block">
+                S'inscrire
+            </button>
+        </form>
+
+        <p class="auth-footer">
+            Déjà un compte ?
+            <a href="{% url 'login' %}">Connectez-vous</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
