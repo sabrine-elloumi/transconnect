@@ -32,5 +32,5 @@ urlpatterns = [
         name='logout'
     ),
 
-    path('register/', include('EntrepriseApp.urls')),
+    path('', include('EntrepriseApp.urls')),
 ]

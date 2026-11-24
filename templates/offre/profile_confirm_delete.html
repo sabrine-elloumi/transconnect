@@ -1,0 +1,27 @@
+{% extends 'offre/base.html' %}
+{% load static %}
+
+{% block title %}Supprimer mon compte{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 620px;">
+    <div class="delete-box">
+        <h1>⚠️ Supprimer mon compte</h1>
+        <p>
+            Es-tu sûr(e) de vouloir supprimer définitivement le compte
+            <strong>{{ user.username }}</strong> ?
+        </p>
+        <p style="color: #e74c3c; font-weight: 600; margin-top: 15px;">
+            Cette action est irréversible. Toutes tes données seront perdues.
+        </p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="delete-actions">
+                <button type="submit" class="btn btn-danger">Oui, supprimer</button>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">Non, annuler</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'offre/base.html' %}
+{% load static %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Mon Profil</h1>
+
+    <div class="detail-card">
+        <ul>
+            <li><strong>Nom d'utilisateur :</strong> {{ profile_user.username }}</li>
+            <li><strong>Email :</strong> {{ profile_user.email|default:"—" }}</li>
+            <li><strong>Prénom :</strong> {{ profile_user.first_name|default:"—" }}</li>
+            <li><strong>Nom :</strong> {{ profile_user.last_name|default:"—" }}</li>
+            <li><strong>Inscrit le :</strong> {{ profile_user.date_joined|date:"d/m/Y H:i" }}</li>
+            <li><strong>Dernière connexion :</strong> {{ profile_user.last_login|date:"d/m/Y H:i"|default:"—" }}</li>
+        </ul>
+    </div>
+
+    <div class="form-actions">
+        <a href="{% url 'profile_edit' %}" class="btn">✏️ Modifier mes infos</a>
+        <a href="{% url 'profile_delete' %}" class="btn btn-danger">🗑️ Supprimer mon compte</a>
+    </div>
+</div>
+{% endblock %}

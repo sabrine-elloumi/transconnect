@@ -13,12 +13,13 @@
     
     <nav class="navbar">
         <div class="navbar-left">
-            <a href="{% url 'Expedition:liste_expedition' %}">Accueil</a>
-            <a href="{% url 'Expedition:create_expedition' %}">Créer une expédition</a>
+            <a href="{% url 'Expedition:liste_expedition' %}"> Accueil</a>
+            <a href="{% url 'Expedition:create_expedition' %}"> Créer une expédition</a>
         </div>
         <div class="navbar-right">
             {% if user.is_authenticated %}
                 <span>Bienvenue, <strong>{{ user.username }}</strong> !</span>
+                <a href="{% url 'profile' %}"> Mon profil</a>
                 <form method="post" action="{% url 'logout' %}" style="display:inline;">
                     {% csrf_token %}
                     <button type="submit" class="link-button">Se déconnecter</button>
@@ -30,7 +31,7 @@
         </div>
     </nav>
 
-  
+    
     {% if messages %}
         <div class="messages">
             {% for message in messages %}
